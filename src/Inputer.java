@@ -52,4 +52,18 @@ public class Inputer {
     return res;
   }
 
+  public Integer[] getIntLine() {
+    String[] res = sc.nextLine().split(" ");
+    Integer[] intRes = new Integer[res.length];
+    for (int i = 0; i < res.length; i++){
+      intRes[i] = Integer.parseInt(res[i]);
+    }
+    return intRes;
+
+  }
+
+  public String[] getStrLine() {
+    return getString().split(" ");
+  }
+
 }
