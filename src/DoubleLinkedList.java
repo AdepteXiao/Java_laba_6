@@ -1,73 +1,89 @@
 import java.util.Arrays;
 
-/**
- * Класс элемента списка
- */
-class DoubleLinkedListItem<T> {
-
-  /**
-   * Ссылка на следующий элемент списка
-   */
-  private DoubleLinkedListItem<T> nextItem = null;
-  /**
-   * Ссылка на предыдущий элемент списка
-   */
-  private DoubleLinkedListItem<T> previousItem = null;
-  public final T data;
-
-  public DoubleLinkedListItem(T data) {
-    this.data = data;
-  }
-
-  /**
-   * Сеттер следующего элемента
-   * @param node передаваемый элемент
-   */
-  public void setNextItem(DoubleLinkedListItem<T> node) {
-    nextItem = node;
-    node.previousItem = this;
-  }
-
-  /**
-   * Геттер следующего элемента
-   */
-  public DoubleLinkedListItem<T> getNextItem() {
-    return nextItem;
-  }
-
-  /**
-   * Сеттер предыдущего элемента
-   * @param node передаваемый элемент
-   */
-  public void setPreviousItem(DoubleLinkedListItem<T> node) {
-    previousItem = node;
-    node.nextItem = this;
-  }
-
-  /**
-   * Геттер предыдущего элемента
-   */
-  public DoubleLinkedListItem<T> getPreviousItem() {
-    return previousItem;
-  }
-
-  public String toString() {
-    return data.toString();
-  }
-
-  public String toRepr() {
-    return String.format("""
-        prev: %s
-        this: %s
-        next: %s
-        """, previousItem, this, nextItem);
-  }
-}
 
 /**
  * Класс списка
  */
 public class DoubleLinkedList<T> {
+
+  /**
+   * Класс элемента списка
+   */
+  private static class DoubleLinkedListItem<T> {
+
+    /**
+     * Ссылка на следующий элемент списка
+     */
+    private DoubleLinkedListItem<T> nextItem = null;
+    /**
+     * Ссылка на предыдущий элемент списка
+     */
+    private DoubleLinkedListItem<T> previousItem = null;
+
+    /**
+     * Содержимое ноды
+     */
+    public T data;
+
+    /**
+     * Конструктор элемента списка
+     */
+    public DoubleLinkedListItem(T data) {
+      this.data = data;
+    }
+
+    /**
+     * Сеттер следующего элемента
+     *
+     * @param node передаваемый элемент
+     */
+    public void setNextItem(DoubleLinkedListItem<T> node) {
+      nextItem = node;
+      node.previousItem = this;
+    }
+
+    /**
+     * Геттер следующего элемента
+     */
+    public DoubleLinkedListItem<T> getNextItem() {
+      return nextItem;
+    }
+
+    /**
+     * Сеттер предыдущего элемента
+     *
+     * @param node передаваемый элемент
+     */
+    public void setPreviousItem(DoubleLinkedListItem<T> node) {
+      previousItem = node;
+      node.nextItem = this;
+    }
+
+    /**
+     * Геттер предыдущего элемента
+     */
+    public DoubleLinkedListItem<T> getPreviousItem() {
+      return previousItem;
+    }
+
+    /**
+     * @return строковое представление элемента списка
+     */
+    public String toString() {
+      return data.toString();
+    }
+
+    /**
+     * @return расширенное строковое представление элемента списка
+     */
+    public String toRepr() {
+      return String.format("""
+          prev: %s
+          this: %s
+          next: %s
+          """, previousItem, this, nextItem);
+    }
+  }
 
   /**
    * Указатель на начальный элемент списка
@@ -84,8 +100,13 @@ public class DoubleLinkedList<T> {
   /**
    * Количество элементов в списке
    */
-  private int size = 0;
+  private int size;
 
+  /**
+   * Конструктор класса списка
+   *
+   * @param head головная нода, возможно связанная с другими
+   */
   public DoubleLinkedList(DoubleLinkedListItem<T> head) {
     this.head = head;
     this.size = 1;
@@ -112,8 +133,8 @@ public class DoubleLinkedList<T> {
   }
 
   /**
-   * Конструктор списка, позволяющий создать
-   * список из последовательности элементов определенного типа
+   * Конструктор списка, позволяющий создать список из последовательности элементов определенного
+   * типа
    *
    * @param vals последовательность элементов
    */
@@ -141,7 +162,7 @@ public class DoubleLinkedList<T> {
   /**
    * Метод перемещения указателя на начало списка
    */
-  public void curToHead(){
+  public void curToHead() {
     curNode = head;
     System.out.print("Указатель перемещен на начало списка \n");
   }
@@ -149,7 +170,7 @@ public class DoubleLinkedList<T> {
   /**
    * Метод перемещения указателя в конец списка
    */
-  public void curToTail(){
+  public void curToTail() {
     curNode = tail;
     System.out.println("Указатель перемещен в конец списка\n");
   }
@@ -157,7 +178,7 @@ public class DoubleLinkedList<T> {
   /**
    * Метод перемещения указателя влево
    */
-  public void curLeft(){
+  public void curLeft() {
     curNode = curNode.getPreviousItem();
     System.out.print("Указатель перемещен влево \n");
   }
@@ -165,7 +186,7 @@ public class DoubleLinkedList<T> {
   /**
    * Метод перемещения указателя вправо
    */
-  public void curRight(){
+  public void curRight() {
     curNode = curNode.getNextItem();
     System.out.print("Указатель перемещен вправо \n");
   }
@@ -176,12 +197,12 @@ public class DoubleLinkedList<T> {
    * @param data вставляемый элемент
    */
   public void insertAfterNode(T data) {
-    if (curNode == null){
+    if (curNode == null) {
       System.out.println("Указатель пуст, сначала введите список");
       return;
     }
     DoubleLinkedListItem<T> prevNode = curNode;
-    DoubleLinkedListItem<T> newNode = new DoubleLinkedListItem<T>(data);
+    DoubleLinkedListItem<T> newNode = new DoubleLinkedListItem<>(data);
     DoubleLinkedListItem<T> nextNode = prevNode.getNextItem();
     if (tail.data == curNode.data) {
       tail = newNode;
@@ -198,9 +219,9 @@ public class DoubleLinkedList<T> {
    */
   public void insertBeforeNode(T data) {
     DoubleLinkedListItem<T> nextNode = curNode;
-    DoubleLinkedListItem<T> newNode = new DoubleLinkedListItem<T>(data);
+    DoubleLinkedListItem<T> newNode = new DoubleLinkedListItem<>(data);
     DoubleLinkedListItem<T> prevNode = nextNode.getPreviousItem();
-    if (curNode == null){
+    if (curNode == null) {
       System.out.println("Указатель пуст, сначала введите список");
       return;
     }
@@ -213,16 +234,11 @@ public class DoubleLinkedList<T> {
   }
 
   /**
-   * Метод удаления элемента перед указателем
+   * Метод для проверки на то что колво нод равно одному
+   * @param delNode нода для удаления
+   * @param nextNode следующая нода
    */
-  public void removeBeforeNode() {
-    DoubleLinkedListItem<T> nextNode = curNode;
-    DoubleLinkedListItem<T> delNode = nextNode.getPreviousItem();
-    DoubleLinkedListItem<T> prevNode = delNode.getPreviousItem();
-    if (size == 0){
-      System.out.println("Список пуст, удаление невозможно");
-      return;
-    }
+  private void fixBounds(DoubleLinkedListItem<T> delNode, DoubleLinkedListItem<T> nextNode) {
     if (size == 1) {
       head = null;
       curNode = null;
@@ -234,6 +250,22 @@ public class DoubleLinkedList<T> {
       if (head == delNode) {
         head = nextNode;
       }
+    }
+  }
+
+  /**
+   * Метод удаления элемента перед указателем
+   */
+  public void removeBeforeNode() {
+    DoubleLinkedListItem<T> nextNode = curNode;
+    DoubleLinkedListItem<T> delNode = nextNode.getPreviousItem();
+    DoubleLinkedListItem<T> prevNode = delNode.getPreviousItem();
+    if (size == 0) {
+      System.out.println("Список пуст, удаление невозможно");
+      return;
+    }
+    fixBounds(delNode, nextNode);
+    if (size != 1) {
       nextNode.setPreviousItem(prevNode);
       prevNode.setNextItem(nextNode);
     }
@@ -247,21 +279,12 @@ public class DoubleLinkedList<T> {
     DoubleLinkedListItem<T> prevNode = curNode;
     DoubleLinkedListItem<T> delNode = prevNode.getNextItem();
     DoubleLinkedListItem<T> nextNode = delNode.getNextItem();
-    if (size == 0){
+    if (size == 0) {
       System.out.println("Список пуст, удаление невозможно");
       return;
     }
-    if (size == 1) {
-      head = null;
-      curNode = null;
-      tail = null;
-    } else {
-      if (tail == delNode) {
-        tail = tail.getPreviousItem();
-      }
-      if (head == delNode) {
-        head = nextNode;
-      }
+    fixBounds(delNode, nextNode);
+    if (size != 1){
       prevNode.setNextItem(nextNode);
       nextNode.setPreviousItem(prevNode);
     }
@@ -271,28 +294,15 @@ public class DoubleLinkedList<T> {
   /**
    * Метод изменения местами предыдущего элемента указателя и следующего
    */
-  public void changePrevWithNext(){
+  public void changePrevWithNext() {
     DoubleLinkedListItem<T> prevNode = curNode.getPreviousItem();
-    DoubleLinkedListItem<T> prevPrevNode = prevNode.getPreviousItem();
     DoubleLinkedListItem<T> nextNode = curNode.getNextItem();
-    DoubleLinkedListItem<T> nextNextNode = nextNode.getNextItem();
-    if (prevNode == head){
-      head = nextNode;
-    }
-    if (tail == nextNode){
-      tail = prevNode;
-    }
-    if (curNode.data == head.data){
-      tail = curNode.getNextItem();
-    }
-    if (curNode == tail){
-      head = curNode.getPreviousItem();
-    }
-    nextNode.setNextItem(curNode);
-    nextNode.setPreviousItem(prevPrevNode);
-    prevNode.setPreviousItem(curNode);
-    prevNode.setNextItem(nextNextNode);
 
+    T data1 = prevNode.data;
+
+    prevNode.data = nextNode.data;
+
+    nextNode.data = data1;
   }
 
   /**
